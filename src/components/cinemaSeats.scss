@@ -1,0 +1,81 @@
+$seat-color: #cc1f2f;
+$seat-notvacantcolor: rgb(48, 47, 47);
+$seat-bordercolor: #000;
+$seat-size: 2em;
+$seat-gap: 3px;
+
+.map {
+  display: grid;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-column-gap: 1rem;
+  justify-content: center;
+
+  > .seats {
+    display: grid;
+    grid-template-columns: repeat(3, 0.2fr);
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+}
+
+.seat {
+  width: $seat-size - ($seat-size / 10);
+  height: $seat-size;
+  border-radius: 4px 4px 8px 8px;
+  background: $seat-color;
+  background: linear-gradient(
+    $seat-color 0%,
+    $seat-color 70%,
+    $seat-bordercolor 70%,
+    $seat-color 77%
+  );
+  position: relative;
+  border: 1px solid $seat-bordercolor;
+  margin: $seat-gap;
+  display: inline-block;
+
+  &:after,
+  &:before {
+    content: '';
+    display: block;
+    width: $seat-size / 6;
+    height: $seat-size / 1.8;
+    position: absolute;
+    background: $seat-color;
+    border-radius: 4px;
+    border: 1px solid $seat-bordercolor;
+    bottom: ($seat-size / 8);
+  }
+
+  &:before {
+    left: ($seat-size / 10) * -1;
+  }
+
+  &:after {
+    right: ($seat-size / 10) * -1;
+  }
+
+  &.notvacant {
+    background: $seat-notvacantcolor;
+    background: linear-gradient(
+      $seat-notvacantcolor 0%,
+      $seat-notvacantcolor 70%,
+      $seat-bordercolor 70%,
+      $seat-notvacantcolor 77%
+    );
+
+    &:before,
+    &:after {
+      background: $seat-notvacantcolor;
+    }
+  }
+}
+
+.space {
+  width: $seat-size * 1.5;
+  display: inline-block;
+}
