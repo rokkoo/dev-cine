@@ -10,7 +10,8 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "hooper": "^0.1.2",
-    "vue": "^2.6.6"
+    "vue": "^2.6.6",
+    "vue-easy-slider": "^5.2.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",

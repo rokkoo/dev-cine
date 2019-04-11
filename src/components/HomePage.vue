@@ -1,19 +1,14 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <hooper :progress="true" :itemsToShow="1.25" :centerMode="true">
-      <slide>
-        <div class="peli">sss</div>
-      </slide>
-      <slide>
-        <div class="peli2">sss</div>
-      </slide>
-      <slide>slide 3</slide>
-      <slide>slide 4</slide>
-      <slide>slide 5</slide>
-      <slide>slide 6</slide>
-      <hooper-navigation slot="hooper-addons"></hooper-navigation>
-    </hooper>
+    <slider animation="fade" :autoplay="false">
+      <slider-item v-for="(movie, index) in movies.movies" :key="index" class="slide">
+        <section class="slideSection" :style="`background-image: url(${movie.posterPath})`">
+          <h3>{{movie.title}}</h3>
+        </section>
+      </slider-item>
+    </slider>
+    <h4 v-if="loadingData">Cargando datos...</h4>
     <div class="map">
       <div class="row">
         <div class="seats">
@@ -112,19 +107,40 @@
 </template>
 
 <script>
-import { Hooper, Slide, Pagination as HooperPagination } from 'hooper';
-import 'hooper/dist/hooper.css';
+import { Slider, SliderItem } from "vue-easy-slider";
+import "hooper/dist/hooper.css";
 
 export default {
-  name: 'HomePage',
+  name: "HomePage",
   props: {
-    msg: String,
+    msg: String
+  },
+  data: function() {
+    return {
+      movies: {},
+      loadingData: true
+    };
+  },
+  beforeMount() {
+    this.fetchData();
   },
   components: {
-    Hooper,
-    Slide,
-    HooperPagination,
+    Slider,
+    SliderItem
   },
+  methods: {
+    fetchData: async function() {
+      this.loadingData = true;
+      const fetchUrl = "http://localhost:3010/movies/cartelera";
+      this.movies = await fetch(fetchUrl).then(data => data.json());
+      this.loadingData = false;
+    }
+  },
+  computed: {
+    setBackGround: function(url) {
+      console.log(url);
+    }
+  }
 };
 </script>
 
@@ -138,12 +154,25 @@ body {
 
 @import "./cinemaSeats.scss";
 
-.peli {
-  background-color: goldenrod;
-  height: 100%;
+.slider {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 2rem;
 }
-.peli2 {
-  background-color: tomato;
+
+.slide {
+  color: #2c3e50;
+  display: grid;
+  align-items: center;
+  font-size: 2rem;
   height: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  > .slideSection {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+  }
 }
 </style>
